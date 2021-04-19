@@ -1,3 +1,6 @@
+
+# Please see https://github.com/Envuso/main instead. All the Envuso packages were moved into a single repository.
+
 <p align="center">
 	<a href="https://envuso.com" target="_blank"><img src="https://envuso.com/assets/mid.png" width="300"></a>
 </p>
