@@ -133,16 +133,16 @@ export default class New extends Command {
 							path.join(projectDir, '.env'),
 						);
 
-						const envData = parse(path.join(projectDir, '.env'));
+						const envContents = fs.readFileSync(path.join(projectDir, '.env'), {encoding : 'utf8'});
+						const envData     = parse(envContents);
 
-						if (envData.APP_KEY === 'some-random-string') {
-							envData.APP_KEY = crypto.randomBytes(32).toString('hex');
+						envData.APP_KEY = crypto.randomBytes(32).toString('hex');
 
-							fs.writeFileSync(
-								path.join(projectDir, '.env'),
-								stringify(envData)
-							);
-						}
+						fs.writeFileSync(
+							path.join(projectDir, '.env'),
+							stringify(envData)
+						);
+
 
 						observer.complete();
 					});
