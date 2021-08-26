@@ -136,7 +136,7 @@ export default class New extends Command {
 						const envContents = fs.readFileSync(path.join(projectDir, '.env'), {encoding : 'utf8'});
 						const envData     = parse(envContents);
 
-						envData.APP_KEY = crypto.randomBytes(32).toString('hex');
+						envData.APP_KEY = crypto.randomBytes(16).toString('hex');
 
 						fs.writeFileSync(
 							path.join(projectDir, '.env'),
