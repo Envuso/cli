@@ -1,6 +1,5 @@
-export const STUB_CONTROLLER = `import {Controller} from "@Providers/Http/Controller/Controller";
-import {get, post, controller, middleware} from "@Decorators";
-
+export const STUB_CONTROLLER = `
+import {Controller, controller, get, put, post, patch, destroy, middleware} from "@envuso/core/Routing";
 
 //@middleware()
 @controller('/')

@@ -1,14 +1,12 @@
-export const STUB_MODEL = `import {Exclude, Expose, Type} from "class-transformer";
+export const STUB_MODEL = `
+import {Exclude, Expose, Type} from "class-transformer";
 import {IsEmail, IsNotEmpty} from "class-validator";
-import {ModelEntity} from "@Providers/Model/ModelEntity";
+import {id, Model} from "@envuso/core/Database";
 import {ObjectId} from "mongodb";
-import {Id} from "@Core/Decorators/ModelDecorators";
-import {injectable} from "inversify";
 
-@injectable()
-export class {{name}} extends ModelEntity<{{name}}> {
+export class {{name}} extends Model<{{name}}> {
 
-	@Id
-	id: ObjectId;
+	@id
+	_id: ObjectId;
 
 }`

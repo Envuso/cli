@@ -1,209 +1,46 @@
 import {Command, flags} from '@oclif/command';
-import * as boxen from "boxen";
 import chalk from "chalk";
 import * as fs from "fs";
-import * as Listr from "listr";
 import * as path from "path";
-//@ts-ignore
-import * as clone from 'git-clone';
-import {Observable} from "rxjs";
-//@ts-ignore
-import * as terminalLink from 'terminal-link';
-import * as inquirer from 'inquirer';
-import {exec, ExecException} from 'child_process';
 import * as crypto from "crypto";
-import envfile from 'envfile';
+import {parse, stringify} from 'envfile';
 
-export default class New extends Command {
+export default class GenerateAppKey extends Command {
 
-	static description = 'Create a new project';
+	static description = 'Generate a new app encryption key';
 
 	static examples = [
-		`$ envuso new`,
+		`$ envuso generate-app-key`,
 	];
 
 	static flags = {
 		help : flags.help({char : 'h'}),
-		// flag with a value (-n, --name=VALUE)
-		//    name: flags.string({char: 'n', description: 'project name', required : true}),
 	};
 
 	static args = [];
 
 	async run() {
-		const {args, flags} = this.parse(New);
+		const {args, flags} = this.parse(GenerateAppKey);
 		const cwd           = process.cwd();
 
-		const projectNameResponse = await inquirer.prompt({
-			name    : 'projectName',
-			message : 'Project folder name?',
-			type    : 'input'
-		});
+		const envPath = path.join(cwd, '.env');
 
-		const projectDir = path.join(cwd, projectNameResponse.projectName);
-
-		const confirmedDirectory = await inquirer.prompt({
-			name    : 'confirmed',
-			type    : 'confirm',
-			message : 'Your project will be created at: ' +
-				chalk.cyan(projectDir) +
-				'\n' +
-				'Is this okay?'
-		});
-
-		if (!confirmedDirectory.confirmed) {
-			this.log(chalk.yellow('Project creation cancelled.'));
+		if (!fs.existsSync(envPath)) {
+			this.warn('No .env file exists in the current directory: ' + cwd);
 
 			return;
 		}
 
-		if (fs.existsSync(projectDir)) {
-			this.warn('This directory already exists. Please choose a different location.');
+		const envData = parse(envPath);
 
-			return;
-		}
-		const packageManagerResponse = await inquirer.prompt({
-			name    : 'manager',
-			type    : 'list',
-			message : 'Which package manager do you wish to use?',
-			choices : [{name : 'npm'}, {name : 'yarn'}]
-		});
+		envData.APP_KEY = crypto.randomBytes(16).toString('hex');
 
-		const tasks = new Listr([
-			{
-				title : 'Prepare Project',
-				task  : () => {
-					return new Observable(observer => {
-						observer.next('Cloning Repository...');
-
-						clone('https://github.com/Envuso/framework', projectDir, async () => {
-							observer.complete();
-						});
-					});
-				}
-			},
-			{
-				title : 'Checking directory exists...',
-				task  : () => {
-					return new Observable(observer => {
-						if (!fs.existsSync(projectDir)) {
-							throw new Error('Project directory doesnt exist for some reason...');
-						}
-						observer.complete();
-					});
-				}
-			},
-			{
-				title : 'Installing dependencies',
-				task  : (ctx, task) => {
-					return new Observable((observable) => {
-						const cmd = this.getPackageManagerArgs(projectDir, packageManagerResponse.manager);
-						if (!cmd) {
-							throw new Error('Hmmm... something went wrong');
-						}
-
-						exec(String(`${cmd}`), (error: ExecException | null, stdout: string, stderr: string) => {
-							if (error === null) {
-								observable.complete();
-								return;
-							}
-							if (error) {
-								throw error;
-							}
-							if (stderr) {
-								throw new Error(stderr);
-							}
-
-							observable.next(stdout);
-						});
-					});
-				}
-			},
-			{
-				title : 'Setup .env file',
-				skip  : (ctx => {
-					return fs.existsSync(path.join(projectDir, '.env'));
-				}),
-				task  : () => {
-					return new Observable(observer => {
-						observer.next('Creating .env file');
-
-						fs.copyFileSync(
-							path.join(projectDir, '.example.env'),
-							path.join(projectDir, '.env'),
-						);
-
-						const envData = envfile.parse(path.join(projectDir, '.env'));
-
-						if (envData.APP_KEY === 'some-random-string') {
-							envData.APP_KEY = crypto.randomBytes(32).toString('hex');
-
-							fs.writeFileSync(
-								path.join(projectDir, '.env'),
-								envfile.stringify(envData)
-							);
-						}
-
-						observer.complete();
-					});
-				}
-			},
-		]);
-
-		try {
-			await tasks.run();
-
-			this.log(this.completionText(packageManagerResponse.manager, projectNameResponse.projectName));
-		} catch (error) {
-			this.error(error);
-		}
-	}
-
-	getPackageManagerArgs(projectDirectory: string, manager: string) {
-		switch (manager) {
-			case 'yarn':
-				return `yarn --cwd ${projectDirectory}`;
-			case 'npm':
-				return `npm --prefix ${projectDirectory} install`;
-		}
-
-		return '';
-	}
-
-	completionText(packageManager: string, projectName: string) {
-		const link = terminalLink('', 'https://envuso.com/docs');
+		fs.writeFileSync(
+			envPath, stringify(envData)
+		);
 
 
-		const envusoText = boxen(chalk.bold.bgBlue.whiteBright(' ENVUSO '),
-			{
-				backgroundColor : "blue",
-				borderColor     : "blue",
-				borderStyle     : "round",
-				padding         : 0,
-				align           : "center",
-			});
-
-		return boxen(
-			envusoText +
-			'\n' +
-			'\n' +
-			'Next Steps:' +
-			'\n' +
-			chalk.bold('cd ' + projectName) +
-			'\n' +
-			chalk.bold('Check package.json scripts to compile & run :)') +
-			'\n' +
-			'\n' +
-			chalk.bold('Don\'t forget to visit the Envuso Documentation') +
-			'\n' +
-			'' + link,
-			{
-				borderColor : "blue",
-				borderStyle : "round",
-				padding     : 1,
-				align       : "center",
-				margin      : 0
-			});
+		return this.log(chalk.green((process.platform === 'win32' ? '»' : '›' ) + ` Successfully re-generated app key.`));
 	}
 
 }

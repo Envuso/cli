@@ -3,11 +3,13 @@ import * as fs from "fs";
 import inquirer, {prompt} from 'inquirer';
 import {snakeCase} from "lodash";
 import * as path from 'path';
-import * as stubs from './Stubs'
+import * as stubs from './Stubs';
 
 export class StubGenerator {
 
 	private stubContents: string;
+
+	private fullPublishPath: string;
 
 	/**
 	 * @param stub
@@ -32,7 +34,7 @@ export class StubGenerator {
 	 * @param vars
 	 */
 	replace(vars: Object) {
-		const varsToReplace = {...vars, ...{name : this.parseFileName()}}
+		const varsToReplace = {...vars, ...{name : this.parseFileName()}};
 
 		for (let key of Object.keys(varsToReplace)) {
 			const replaceKey = `{{${key}}}`;
@@ -54,7 +56,15 @@ export class StubGenerator {
 			fileName += '.ts';
 		}
 
-		return path.join(...this.stubPublishPath, fileName);
+		const directories = [...this.stubPublishPath];
+		if (this.fileNameAndLocation.includes('/')) {
+			const controllerDirs = this.fileNameAndLocation.split('/');
+			controllerDirs.pop();
+
+			directories.push(...controllerDirs);
+		}
+
+		return path.join(...directories, fileName);
 	}
 
 	/**
@@ -122,6 +132,8 @@ export class StubGenerator {
 
 		fs.writeFileSync(this.creationPath, this.stubContents);
 
+		console.log(chalk.bold.green(`Your ${this.nameSuffix} was created at ${this.creationPath}`));
+
 		return true;
 	}
 
@@ -140,6 +152,7 @@ export class StubGenerator {
 			directories.push(...controllerDirs);
 		}
 
+
 		let dirChecks = [];
 		for (let directory of directories) {
 			const dir = path.join('.', ...dirChecks, directory);
@@ -148,8 +161,9 @@ export class StubGenerator {
 				fs.mkdirSync(dir);
 			}
 
-			dirChecks.push(directory)
+			dirChecks.push(directory);
 		}
+
 	}
 
 	/**
@@ -159,7 +173,7 @@ export class StubGenerator {
 		let fileName = this.fileNameAndLocation;
 
 		if (fileName.includes('/')) {
-			fileName = fileName.split('/').pop()
+			fileName = fileName.split('/').pop();
 		}
 
 		if (this.useNameSuffixInFileName) {

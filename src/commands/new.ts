@@ -1,36 +1,37 @@
-import {Command, flags} from '@oclif/command'
+import {Command, flags} from '@oclif/command';
 import * as boxen from "boxen";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as Listr from "listr";
 import * as path from "path";
 //@ts-ignore
-import * as clone from 'git-clone'
+import * as clone from 'git-clone';
 import {Observable} from "rxjs";
 //@ts-ignore
 import * as terminalLink from 'terminal-link';
-import * as inquirer from 'inquirer'
+import * as inquirer from 'inquirer';
 import {exec, ExecException} from 'child_process';
-
+import * as crypto from "crypto";
+import {parse, stringify} from 'envfile';
 
 export default class New extends Command {
 
-	static description = 'Create a new project'
+	static description = 'Create a new project';
 
 	static examples = [
 		`$ envuso new`,
-	]
+	];
 
 	static flags = {
 		help : flags.help({char : 'h'}),
 		// flag with a value (-n, --name=VALUE)
-//    name: flags.string({char: 'n', description: 'project name', required : true}),
-	}
+		//    name: flags.string({char: 'n', description: 'project name', required : true}),
+	};
 
-	static args = []
+	static args = [];
 
 	async run() {
-		const {args, flags} = this.parse(New)
+		const {args, flags} = this.parse(New);
 		const cwd           = process.cwd();
 
 		const projectNameResponse = await inquirer.prompt({
@@ -86,7 +87,7 @@ export default class New extends Command {
 				task  : () => {
 					return new Observable(observer => {
 						if (!fs.existsSync(projectDir)) {
-							throw new Error('Project directory doesnt exist for some reason...')
+							throw new Error('Project directory doesnt exist for some reason...');
 						}
 						observer.complete();
 					});
@@ -114,16 +115,45 @@ export default class New extends Command {
 							}
 
 							observable.next(stdout);
-						})
-					})
+						});
+					});
 				}
-			}
+			},
+			{
+				title : 'Setup .env file',
+				skip  : (ctx => {
+					return fs.existsSync(path.join(projectDir, '.env'));
+				}),
+				task  : () => {
+					return new Observable(observer => {
+						observer.next('Creating .env file');
+
+						fs.copyFileSync(
+							path.join(projectDir, '.example.env'),
+							path.join(projectDir, '.env'),
+						);
+
+						const envData = parse(path.join(projectDir, '.env'));
+
+						if (envData.APP_KEY === 'some-random-string') {
+							envData.APP_KEY = crypto.randomBytes(32).toString('hex');
+
+							fs.writeFileSync(
+								path.join(projectDir, '.env'),
+								stringify(envData)
+							);
+						}
+
+						observer.complete();
+					});
+				}
+			},
 		]);
 
 		try {
 			await tasks.run();
 
-			this.log(this.completionText(packageManagerResponse.manager, projectNameResponse.projectName))
+			this.log(this.completionText(packageManagerResponse.manager, projectNameResponse.projectName));
 		} catch (error) {
 			this.error(error);
 		}

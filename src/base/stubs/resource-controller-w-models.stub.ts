@@ -1,8 +1,5 @@
-export const STUB_CONTROLLER_W_MODELS =
-`import {response} from "@Core/Helpers";
-import {Controller} from "@Providers/Http/Controller/Controller";
-import {get, post, put, patch, destroy, controller, middleware, param, dto} from "@Decorators";
-import {DataTransferObject} from "@Providers/Http/Controller/DataTransferObject";
+export const STUB_CONTROLLER_W_MODELS = `
+import {Controller, controller, response, get, put, post, patch, destroy, middleware, param, dto, DataTransferObject} from "@envuso/core/Routing";
 
 class StoreBody extends DataTransferObject {
 
@@ -43,4 +40,4 @@ export class {{name}} extends Controller {
 	}
 
 }
-`
+`;

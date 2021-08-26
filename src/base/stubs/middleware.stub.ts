@@ -1,12 +1,10 @@
-export const STUB_MIDDLEWARE = `import {FastifyReply, FastifyRequest} from "fastify";
-import {injectable} from "inversify";
-import {Middleware} from "@Providers/Http/Controller/Middleware";
+export const STUB_MIDDLEWARE = `
+import {Middleware, RequestContext} from "@envuso/core/Routing";
 
 
-@injectable()
 export class {{name}} extends Middleware {
 
-	public async handler(request: FastifyRequest, response: FastifyReply) {
+	public async handle(context: RequestContext) {
 
 	}
 

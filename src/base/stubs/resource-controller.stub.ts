@@ -1,6 +1,5 @@
-export const STUB_RESOURCE_CONTROLLER = `import {Controller} from "@Providers/Http/Controller/Controller";
-import {get, post, put, patch, destroy, controller, middleware, param, dto} from "@Decorators";
-import {DataTransferObject} from "@Providers/Http/Controller/DataTransferObject";
+export const STUB_RESOURCE_CONTROLLER = `
+import {Controller, controller, get, put, post, patch, destroy, middleware, param, dto, DataTransferObject} from "@envuso/core/Routing";
 
 class StoreBody extends DataTransferObject {
 
