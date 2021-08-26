@@ -1,8 +1,6 @@
 
-# Please see https://github.com/Envuso/main instead. All the Envuso packages were moved into a single repository.
-
 <p align="center">
-	<a href="https://envuso.com" target="_blank"><img src="https://envuso.com/assets/mid.png" width="300"></a>
+	<a href="https://envuso.com" target="_blank"><img src="https://envuso.com/assets/logo.svg" width="300"></a>
 </p>
 
 <p align="center">
@@ -24,36 +22,32 @@
 Envuso CLI, make a project, generate framework files etc
 
 <!-- toc -->
-
 * [Usage](#usage)
 * [Commands](#commands)
-
 <!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g @envuso/cli
 $ envuso COMMAND
 running command...
 $ envuso (-v|--version|version)
-@envuso/cli/0.0.41 darwin-arm64 node-v15.8.0
+@envuso/cli/0.0.52 darwin-arm64 node-v16.0.0
 $ envuso --help [COMMAND]
 USAGE
   $ envuso COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
 * [`envuso autocomplete [SHELL]`](#envuso-autocomplete-shell)
 * [`envuso commands`](#envuso-commands)
+* [`envuso generate-app-key`](#envuso-generate-app-key)
 * [`envuso help [COMMAND]`](#envuso-help-command)
 * [`envuso make:controller NAME`](#envuso-makecontroller-name)
 * [`envuso make:middleware NAME`](#envuso-makemiddleware-name)
@@ -107,6 +101,23 @@ OPTIONS
 
 _See code: [@oclif/plugin-commands](https://github.com/oclif/plugin-commands/blob/v1.3.0/src/commands/commands.ts)_
 
+## `envuso generate-app-key`
+
+Generate a new app encryption key
+
+```
+USAGE
+  $ envuso generate-app-key
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ envuso generate-app-key
+```
+
+_See code: [src/commands/generate-app-key.ts](https://github.com/envuso/cli/blob/v0.0.52/src/commands/generate-app-key.ts)_
+
 ## `envuso help [COMMAND]`
 
 display help for envuso
@@ -146,7 +157,7 @@ EXAMPLES
   $ envuso make:controller User --resource --model=User
 ```
 
-_See code: [src/commands/make/controller.ts](https://github.com/envuso/cli/blob/v0.0.41/src/commands/make/controller.ts)_
+_See code: [src/commands/make/controller.ts](https://github.com/envuso/cli/blob/v0.0.52/src/commands/make/controller.ts)_
 
 ## `envuso make:middleware NAME`
 
@@ -166,7 +177,7 @@ EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [src/commands/make/middleware.ts](https://github.com/envuso/cli/blob/v0.0.41/src/commands/make/middleware.ts)_
+_See code: [src/commands/make/middleware.ts](https://github.com/envuso/cli/blob/v0.0.52/src/commands/make/middleware.ts)_
 
 ## `envuso make:model NAME`
 
@@ -186,7 +197,7 @@ EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [src/commands/make/model.ts](https://github.com/envuso/cli/blob/v0.0.41/src/commands/make/model.ts)_
+_See code: [src/commands/make/model.ts](https://github.com/envuso/cli/blob/v0.0.52/src/commands/make/model.ts)_
 
 ## `envuso new`
 
@@ -203,5 +214,5 @@ EXAMPLE
   $ envuso new
 ```
 
-_See code: [src/commands/new.ts](https://github.com/envuso/cli/blob/v0.0.41/src/commands/new.ts)_
+_See code: [src/commands/new.ts](https://github.com/envuso/cli/blob/v0.0.52/src/commands/new.ts)_
 <!-- commandsstop -->
