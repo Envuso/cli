@@ -129,7 +129,7 @@ export default class New extends Command {
 						observer.next('Creating .env file');
 
 						fs.copyFileSync(
-							path.join(projectDir, '.example.env'),
+							path.join(projectDir, 'example.env'),
 							path.join(projectDir, '.env'),
 						);
 
