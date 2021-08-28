@@ -3,7 +3,7 @@ import * as fs from "fs";
 import inquirer, {prompt} from 'inquirer';
 import {snakeCase} from "lodash";
 import * as path from 'path';
-import * as stubs from './Stubs';
+import * as stubs from './stubs'; // rename ./Stubs => ./stubs
 
 export class StubGenerator {
 

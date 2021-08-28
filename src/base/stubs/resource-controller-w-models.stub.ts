@@ -1,6 +1,8 @@
 export const STUB_CONTROLLER_W_MODELS = `
 import {Controller, controller, response, get, put, post, patch, destroy, middleware, param, dto, DataTransferObject} from "@envuso/core/Routing";
 
+import {{{modelName}}} from "{{modelPath}}";
+
 class StoreBody extends DataTransferObject {
 
 }

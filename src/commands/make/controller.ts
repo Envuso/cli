@@ -3,6 +3,8 @@ import chalk from "chalk";
 import {StubGenerator} from "./../../base/StubGenerator";
 import { camelCase } from 'lodash';
 
+import * as fs from 'fs'
+
 export default class Controller extends Command {
 
 	static title = 'make:controller';
@@ -60,9 +62,18 @@ export default class Controller extends Command {
 		);
 
 		if(flags.resource && flags.model){
+
+		  let modelPath = await this.checkForModel(flags.model);
+		  if(!modelPath) {
+		    this.warn(chalk.yellow('That model does not exist. Check the spelling and try again.'))
+
+        return;
+      }
+
 			generator.replace({
 				modelParamName : camelCase(flags.model),
-				modelName      : flags.model
+				modelName      : flags.model,
+				modelPath: modelPath
 			});
 		} else {
 			generator.replace({});
@@ -77,4 +88,15 @@ export default class Controller extends Command {
 
 		generator.save();
 	}
+
+	/**
+	 * Maybe check if the model exists in case the user enters a wrong name or makes a typo?
+	 */
+  async checkForModel(model: string): Promise<string | boolean> {
+    let files = await fs.promises.readdir('./src/App/Models')
+    if(files.includes(model+'.ts')) {
+      return `App/Models/${model}`
+    }
+    return false;
+  }
 }
