@@ -116,7 +116,7 @@ EXAMPLE
   $ envuso generate-app-key
 ```
 
-_See code: [src/commands/generate-app-key.ts](https://github.com/envuso/cli/blob/v0.1.5/src/commands/generate-app-key.ts)_
+_See code: [lib/commands/generate-app-key.js](https://github.com/envuso/cli/blob/v0.1.5/lib/commands/generate-app-key.js)_
 
 ## `envuso help [COMMAND]`
 
@@ -147,6 +147,7 @@ ARGUMENTS
   NAME  Set a name for your controller(Does not need to contain "Controller" this will be automatically added.)
 
 OPTIONS
+  -f, --force        Force create the controller, even if it exists.
   -h, --help         show CLI help
   -m, --model=model  Create a resource controller using your model
   -r, --resource     Create a resource controller(Controller using GET, PUT, POST, PATCH, DELETE)
@@ -157,7 +158,7 @@ EXAMPLES
   $ envuso make:controller User --resource --model=User
 ```
 
-_See code: [src/commands/make/controller.ts](https://github.com/envuso/cli/blob/v0.1.5/src/commands/make/controller.ts)_
+_See code: [lib/commands/make/controller.js](https://github.com/envuso/cli/blob/v0.1.5/lib/commands/make/controller.js)_
 
 ## `envuso make:middleware NAME`
 
@@ -171,13 +172,14 @@ ARGUMENTS
   NAME  Set a name for your middleware(Does not need to contain "Middleware" this will be automatically added.)
 
 OPTIONS
-  -h, --help  show CLI help
+  -f, --force  Force create the controller, even if it exists.
+  -h, --help   show CLI help
 
 EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [src/commands/make/middleware.ts](https://github.com/envuso/cli/blob/v0.1.5/src/commands/make/middleware.ts)_
+_See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/v0.1.5/lib/commands/make/middleware.js)_
 
 ## `envuso make:model NAME`
 
@@ -191,13 +193,14 @@ ARGUMENTS
   NAME  Set a name for your middleware(Does not need to contain "Model" this will be automatically added.)
 
 OPTIONS
-  -h, --help  show CLI help
+  -f, --force  Force create the controller, even if it exists.
+  -h, --help   show CLI help
 
 EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [src/commands/make/model.ts](https://github.com/envuso/cli/blob/v0.1.5/src/commands/make/model.ts)_
+_See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.1.5/lib/commands/make/model.js)_
 
 ## `envuso new`
 
@@ -214,5 +217,5 @@ EXAMPLE
   $ envuso new
 ```
 
-_See code: [src/commands/new.ts](https://github.com/envuso/cli/blob/v0.1.5/src/commands/new.ts)_
+_See code: [lib/commands/new.js](https://github.com/envuso/cli/blob/v0.1.5/lib/commands/new.js)_
 <!-- commandsstop -->
