@@ -1,21 +1,21 @@
-import {Command, flags} from '@oclif/command'
+import {Command, flags} from '@oclif/command';
 import chalk from "chalk";
 import {StubGenerator} from "./../../base/StubGenerator";
-import { camelCase } from 'lodash';
+import {camelCase} from 'lodash';
 
-import * as fs from 'fs'
+import * as fs from 'fs';
 
 export default class Controller extends Command {
 
 	static title = 'make:controller';
 
-	static description = 'Create a controller'
+	static description = 'Create a controller';
 
 	static examples = [
 		`$ envuso make:controller User`,
 		`$ envuso make:controller User --resource`,
 		`$ envuso make:controller User --resource --model=User `,
-	]
+	];
 
 	static flags = {
 		help     : flags.help({char : 'h'}),
@@ -32,7 +32,7 @@ export default class Controller extends Command {
 			name        : 'model',
 			dependsOn   : ['resource'],
 		})
-	}
+	};
 
 	static args = [
 		{
@@ -41,10 +41,10 @@ export default class Controller extends Command {
 			type        : 'string',
 			required    : true,
 		}
-	]
+	];
 
 	async run() {
-		const {args, flags} = this.parse(Controller)
+		const {args, flags} = this.parse(Controller);
 
 		let stub = 'controller';
 		if (flags.resource && !flags.model) {
@@ -61,19 +61,18 @@ export default class Controller extends Command {
 			args.name
 		);
 
-		if(flags.resource && flags.model){
+		if (flags.resource && flags.model) {
+			let modelPath = await this.checkForModel(flags.model);
+			if (!modelPath) {
+				this.warn(chalk.yellow('That model does not exist. Check the spelling and try again.'));
 
-		  let modelPath = await this.checkForModel(flags.model);
-		  if(!modelPath) {
-		    this.warn(chalk.yellow('That model does not exist. Check the spelling and try again.'))
-
-        return;
-      }
+				return;
+			}
 
 			generator.replace({
 				modelParamName : camelCase(flags.model),
 				modelName      : flags.model,
-				modelPath: modelPath
+				modelPath      : modelPath
 			});
 		} else {
 			generator.replace({});
@@ -92,11 +91,11 @@ export default class Controller extends Command {
 	/**
 	 * Maybe check if the model exists in case the user enters a wrong name or makes a typo?
 	 */
-  async checkForModel(model: string): Promise<string | boolean> {
-    let files = await fs.promises.readdir('./src/App/Models')
-    if(files.includes(model+'.ts')) {
-      return `App/Models/${model}`
-    }
-    return false;
-  }
+	async checkForModel(model: string): Promise<string | boolean> {
+		let files = await fs.promises.readdir('./src/App/Models');
+		if (files.includes(model + '.ts')) {
+			return `App/Models/${model}`;
+		}
+		return false;
+	}
 }
