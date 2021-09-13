@@ -9,6 +9,9 @@
     "strict": false,
     "target": "es2017",
     "baseUrl": "src",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "include": [
     "src/**/*"

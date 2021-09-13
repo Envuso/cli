@@ -1,9 +1,9 @@
 import chalk from "chalk";
 import * as fs from "fs";
-import inquirer, {prompt} from 'inquirer';
+import {prompt} from 'inquirer';
 import {snakeCase} from "lodash";
 import * as path from 'path';
-import * as stubs from './stubs'; // rename ./Stubs => ./stubs
+//import * as stubs from './stubs'; // rename ./Stubs => ./stubs
 
 export class StubGenerator {
 
@@ -25,7 +25,7 @@ export class StubGenerator {
 		private fileNameAndLocation: string,
 		private useNameSuffixInFileName: boolean = true
 	) {
-		this.stubContents = stubs[snakeCase('STUB_' + this.stub).toUpperCase()];
+//		this.stubContents = stubs[snakeCase('STUB_' + this.stub).toUpperCase()];
 	}
 
 	/**

@@ -1,9 +1,12 @@
 import {Command, flags} from '@oclif/command';
-import chalk from "chalk";
-import {StubGenerator} from "./../../base/StubGenerator";
-import {camelCase} from 'lodash';
-
 import * as fs from 'fs';
+import {prompt} from "inquirer";
+import {ControllerCrudResourceStubFactory} from "../../base/StubFactories/Controller/ControllerCrudResourceStubFactory";
+import {ControllerResourceStubFactory} from "../../base/StubFactories/Controller/ControllerResourceStubFactory";
+import {ControllerStubFactory} from "../../base/StubFactories/Controller/ControllerStubFactory";
+import {ModelStubFactory} from "../../base/StubFactories/Model/ModelStubFactory";
+import {SetupType, TsCompiler} from "../../base/TsCompiler";
+
 
 export default class Controller extends Command {
 
@@ -31,7 +34,14 @@ export default class Controller extends Command {
 			char        : 'm',
 			name        : 'model',
 			dependsOn   : ['resource'],
-		})
+		}),
+		force    : flags.boolean({
+			description : 'Force create the controller, even if it exists.',
+			char        : 'f',
+			name        : 'force',
+			type        : 'boolean',
+			default     : false
+		}),
 	};
 
 	static args = [
@@ -46,56 +56,31 @@ export default class Controller extends Command {
 	async run() {
 		const {args, flags} = this.parse(Controller);
 
-		let stub = 'controller';
+
+		await TsCompiler.setup(SetupType.CONTROLLER);
+
+		let stub = ControllerStubFactory;
 		if (flags.resource && !flags.model) {
-			stub = 'RESOURCE_CONTROLLER';
+			stub = ControllerResourceStubFactory;
 		}
 		if (flags.resource && flags.model) {
-			stub = 'CONTROLLER_W_MODELS';
-		}
+			stub = ControllerCrudResourceStubFactory;
 
-		const generator = new StubGenerator(
-			stub,
-			'Controller',
-			['src', 'App', 'Http', 'Controllers'],
-			args.name
-		);
+			if (!TsCompiler.hasModel(flags.model)) {
+				const result = await prompt({
+					type    : 'confirm',
+					name    : 'generate',
+					message : "This model does not exist, would you like to generate it?"
+				});
 
-		if (flags.resource && flags.model) {
-			let modelPath = await this.checkForModel(flags.model);
-			if (!modelPath) {
-				this.warn(chalk.yellow('That model does not exist. Check the spelling and try again.'));
-
-				return;
+				if (result?.generate) {
+					await TsCompiler.generateStub(ModelStubFactory, flags.model, {...{name : flags.model}, ...flags});
+				}
 			}
 
-			generator.replace({
-				modelParamName : camelCase(flags.model),
-				modelName      : flags.model,
-				modelPath      : modelPath
-			});
-		} else {
-			generator.replace({});
 		}
 
+		await TsCompiler.generateStub(stub, args.name, {...args, ...flags});
 
-		if (!await generator.prepareToCreateFile()) {
-			this.warn(chalk.yellow('Controller was not created at: ' + generator.creationPath));
-
-			return;
-		}
-
-		generator.save();
-	}
-
-	/**
-	 * Maybe check if the model exists in case the user enters a wrong name or makes a typo?
-	 */
-	async checkForModel(model: string): Promise<string | boolean> {
-		let files = await fs.promises.readdir('./src/App/Models');
-		if (files.includes(model + '.ts')) {
-			return `App/Models/${model}`;
-		}
-		return false;
 	}
 }
