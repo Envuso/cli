@@ -34,7 +34,7 @@ $ npm install -g @envuso/cli
 $ envuso COMMAND
 running command...
 $ envuso (-v|--version|version)
-@envuso/cli/0.2.0-0 darwin-arm64 node-v16.0.0
+@envuso/cli/0.1.6 darwin-arm64 node-v16.0.0
 $ envuso --help [COMMAND]
 USAGE
   $ envuso COMMAND
@@ -116,7 +116,7 @@ EXAMPLE
   $ envuso generate-app-key
 ```
 
-_See code: [lib/commands/generate-app-key.js](https://github.com/envuso/cli/blob/v0.2.0-0/lib/commands/generate-app-key.js)_
+_See code: [lib/commands/generate-app-key.js](https://github.com/envuso/cli/blob/v0.1.6/lib/commands/generate-app-key.js)_
 
 ## `envuso help [COMMAND]`
 
@@ -158,7 +158,7 @@ EXAMPLES
   $ envuso make:controller User --resource --model=User
 ```
 
-_See code: [lib/commands/make/controller.js](https://github.com/envuso/cli/blob/v0.2.0-0/lib/commands/make/controller.js)_
+_See code: [lib/commands/make/controller.js](https://github.com/envuso/cli/blob/v0.1.6/lib/commands/make/controller.js)_
 
 ## `envuso make:middleware NAME`
 
@@ -179,7 +179,7 @@ EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/v0.2.0-0/lib/commands/make/middleware.js)_
+_See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/v0.1.6/lib/commands/make/middleware.js)_
 
 ## `envuso make:model NAME`
 
@@ -200,7 +200,7 @@ EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.2.0-0/lib/commands/make/model.js)_
+_See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.1.6/lib/commands/make/model.js)_
 
 ## `envuso new`
 
@@ -217,5 +217,5 @@ EXAMPLE
   $ envuso new
 ```
 
-_See code: [lib/commands/new.js](https://github.com/envuso/cli/blob/v0.2.0-0/lib/commands/new.js)_
+_See code: [lib/commands/new.js](https://github.com/envuso/cli/blob/v0.1.6/lib/commands/new.js)_
 <!-- commandsstop -->
