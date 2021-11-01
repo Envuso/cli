@@ -1,26 +1,33 @@
+import {SyntaxKind} from "@ts-morph/common";
 import chalk from "chalk";
-import {IndentationText, Project, SourceFile} from "ts-morph";
+import {ArrayLiteralExpression, IndentationText, Project, SourceFile} from "ts-morph";
 import {StubFactory} from "./StubFactories/StubFactory";
 import {Log} from "./Utility/Log";
 import {LogSymbols} from "./Utility/LogSymbols";
 
-export enum SetupType {
-	CONTROLLER = 'controller',
-	MODEL      = 'model',
+export type ClassesLoaded = {
+	controller: SourceFile[];
+	model: SourceFile[];
+	socketChannelListener: SourceFile[];
+	middleware: SourceFile[];
+	config: SourceFile[];
 }
 
 export class TsCompiler {
 	private static project: Project = null;
 
-	private static filesLoadedStatus = {
-		controllers : false,
-		models      : false,
+	private static classesLoaded: ClassesLoaded = {
+		controller            : [],
+		model                 : [],
+		socketChannelListener : [],
+		middleware            : [],
+		config                : [],
 	};
 
-	private static models: SourceFile[]      = [];
-	private static controllers: SourceFile[] = [];
+	private static applicationServiceProviders: string[]                    = null;
+	private static applicationServiceProvidersArray: ArrayLiteralExpression = null;
 
-	public static setup(type: SetupType): TsCompiler {
+	public static setup(): TsCompiler {
 
 		this.project = new Project({
 			skipAddingFilesFromTsConfig  : true,
@@ -34,50 +41,57 @@ export class TsCompiler {
 			}
 		});
 
-		TsCompiler.loadControllers();
-		TsCompiler.loadModels();
+		this.classesLoaded.model                 = this.project.addSourceFilesAtPaths('src/App/Models/**/*');
+		this.classesLoaded.controller            = this.project.addSourceFilesAtPaths('src/App/Http/Controllers/**/*');
+		this.classesLoaded.socketChannelListener = this.project.addSourceFilesAtPaths('src/App/Http/Sockets/**/*');
+		this.classesLoaded.middleware            = this.project.addSourceFilesAtPaths('src/App/Http/Middleware/**/*');
+		this.classesLoaded.config                = this.project.addSourceFilesAtPaths('src/Config/**/*');
 
 		return this;
 	}
 
 	public static getModels(): SourceFile[] {
-		return this.models;
-	}
-
-	public static loadModels(force: boolean = false) {
-		if (!force && this.filesLoadedStatus.models) {
-			return;
-		}
-
-		this.models = this.project.addSourceFilesAtPaths('src/App/Models/**/*');
-
-		this.filesLoadedStatus.models = true;
-	}
-
-	public static hasModel(name: string): boolean {
-		return this.models
-			.filter(file => file.getClasses().length > 0)
-			.some(file => file.getClasses().some(c => c.getName() === name));
-	}
-
-	public static loadControllers(force: boolean = false) {
-		if (!force && this.filesLoadedStatus.controllers) {
-			return;
-		}
-
-		this.controllers = this.project.addSourceFilesAtPaths('src/App/Http/Controllers/**/*');
-
-		this.filesLoadedStatus.controllers = true;
+		return this.classesLoaded.model;
 	}
 
 	public static getControllers(): SourceFile[] {
-		return this.controllers;
+		return this.classesLoaded.controller;
 	}
 
-	public static hasController(name: string): boolean {
-		return this.controllers
+	public static getConfigSource(file: string): SourceFile {
+		return this.classesLoaded.config.find(f => f.getBaseNameWithoutExtension() === file);
+	}
+
+	public static hasModel(name: string): boolean {
+		return this.classesLoaded.model
 			.filter(file => file.getClasses().length > 0)
 			.some(file => file.getClasses().some(c => c.getName() === name));
+	}
+
+	public static getApplicationServiceProviders(): string[] {
+		if (this.applicationServiceProviders === null) {
+			const appConfigSource = TsCompiler.getConfigSource('AppConfiguration');
+			const appConfigClass  = appConfigSource.getClasses()[0];
+
+			this.applicationServiceProvidersArray = appConfigClass.getMember('providers')
+				.asKind(SyntaxKind.PropertyDeclaration)
+				.getInitializer()
+				.asKind(SyntaxKind.ArrayLiteralExpression);
+
+			this.applicationServiceProviders = this.applicationServiceProvidersArray.getElements().map(p => {
+				return p.getText();
+			});
+		}
+
+		return this.applicationServiceProviders;
+	}
+
+	public static hasServiceProvider(provider: string) {
+		return this.getApplicationServiceProviders().includes(provider);
+	}
+
+	public static getServiceProvidersArray(): ArrayLiteralExpression {
+		return this.applicationServiceProvidersArray;
 	}
 
 	public static async generateStub(factory: new () => StubFactory, filePath: string, args: { [key: string]: any }) {

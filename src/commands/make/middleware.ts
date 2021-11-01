@@ -1,10 +1,7 @@
 import {Command, flags} from '@oclif/command';
-import chalk from "chalk";
 import {MiddlewareStubFactory} from "../../base/StubFactories/Middleware/MiddlewareStubFactory";
-import {ModelStubFactory} from "../../base/StubFactories/Model/ModelStubFactory";
-import {SetupType, TsCompiler} from "../../base/TsCompiler";
-import {StubGenerator} from "./../../base/StubGenerator";
-import {camelCase} from 'lodash';
+import { TsCompiler} from "../../base/TsCompiler";
+
 
 export default class Middleware extends Command {
 
@@ -40,24 +37,8 @@ export default class Middleware extends Command {
 		const {args, flags} = this.parse(Middleware);
 
 		const stub = MiddlewareStubFactory;
-		await TsCompiler.setup(SetupType.MODEL);
+		await TsCompiler.setup();
 		await TsCompiler.generateStub(stub, args.name, {...args, ...flags});
 
-		//		const generator = new StubGenerator(
-		//			'MIDDLEWARE',
-		//			'Middleware',
-		//			['src', 'App', 'Http', 'Middleware'],
-		//			args.name
-		//		);
-		//
-		//		generator.replace({});
-		//
-		//		if (!await generator.prepareToCreateFile()) {
-		//			this.warn(chalk.yellow('Middleware was not created at: ' + generator.creationPath));
-		//
-		//			return;
-		//		}
-		//
-		//		generator.save();
 	}
 }

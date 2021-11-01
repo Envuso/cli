@@ -1,8 +1,6 @@
 import {Command, flags} from '@oclif/command';
-import chalk from "chalk";
 import {ModelStubFactory} from "../../base/StubFactories/Model/ModelStubFactory";
-import {StubGenerator} from "../../base/StubGenerator";
-import {SetupType, TsCompiler} from "../../base/TsCompiler";
+import {TsCompiler} from "../../base/TsCompiler";
 
 export default class Model extends Command {
 
@@ -39,25 +37,7 @@ export default class Model extends Command {
 
 		const stub = ModelStubFactory;
 
-		await TsCompiler.setup(SetupType.MODEL);
+		await TsCompiler.setup();
 		await TsCompiler.generateStub(stub, args.name, {...args, ...flags});
-
-		//		const generator = new StubGenerator(
-		//			'MODEL',
-		//			'Model',
-		//			['src', 'App', 'Models'],
-		//			args.name,
-		//			false
-		//		);
-		//
-		//		generator.replace({});
-		//
-		//		if (!await generator.prepareToCreateFile()) {
-		//			this.warn(chalk.yellow('Model was not created at: ' + generator.creationPath));
-		//
-		//			return;
-		//		}
-		//
-		//		generator.save();
 	}
 }

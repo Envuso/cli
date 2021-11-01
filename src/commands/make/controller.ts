@@ -1,11 +1,10 @@
 import {Command, flags} from '@oclif/command';
-import * as fs from 'fs';
 import {prompt} from "inquirer";
 import {ControllerCrudResourceStubFactory} from "../../base/StubFactories/Controller/ControllerCrudResourceStubFactory";
 import {ControllerResourceStubFactory} from "../../base/StubFactories/Controller/ControllerResourceStubFactory";
 import {ControllerStubFactory} from "../../base/StubFactories/Controller/ControllerStubFactory";
 import {ModelStubFactory} from "../../base/StubFactories/Model/ModelStubFactory";
-import {SetupType, TsCompiler} from "../../base/TsCompiler";
+import { TsCompiler} from "../../base/TsCompiler";
 
 
 export default class Controller extends Command {
@@ -57,7 +56,7 @@ export default class Controller extends Command {
 		const {args, flags} = this.parse(Controller);
 
 
-		await TsCompiler.setup(SetupType.CONTROLLER);
+		await TsCompiler.setup();
 
 		let stub = ControllerStubFactory;
 		if (flags.resource && !flags.model) {
