@@ -34,7 +34,7 @@ $ npm install -g @envuso/cli
 $ envuso COMMAND
 running command...
 $ envuso (-v|--version|version)
-@envuso/cli/0.1.7 darwin-arm64 node-v16.0.0
+@envuso/cli/0.1.8 darwin-arm64 node-v17.0.1
 $ envuso --help [COMMAND]
 USAGE
   $ envuso COMMAND
@@ -46,12 +46,15 @@ USAGE
 
 <!-- commands -->
 * [`envuso autocomplete [SHELL]`](#envuso-autocomplete-shell)
-* [`envuso commands`](#envuso-commands)
+* [`envuso build`](#envuso-build)
+* [`envuso db:seed`](#envuso-dbseed)
 * [`envuso generate-app-key`](#envuso-generate-app-key)
 * [`envuso help [COMMAND]`](#envuso-help-command)
+* [`envuso list`](#envuso-list)
 * [`envuso make:controller NAME`](#envuso-makecontroller-name)
 * [`envuso make:middleware NAME`](#envuso-makemiddleware-name)
 * [`envuso make:model NAME`](#envuso-makemodel-name)
+* [`envuso make:socket-channel-listener NAME`](#envuso-makesocket-channel-listener-name)
 * [`envuso new`](#envuso-new)
 
 ## `envuso autocomplete [SHELL]`
@@ -77,29 +80,41 @@ EXAMPLES
 
 _See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v0.3.0/src/commands/autocomplete/index.ts)_
 
-## `envuso commands`
+## `envuso build`
 
-list all the commands
+Build envuso
 
 ```
 USAGE
-  $ envuso commands
+  $ envuso build
 
 OPTIONS
-  -h, --help              show CLI help
-  -j, --json              display unfiltered api data in json format
-  -x, --extended          show extra columns
-  --columns=columns       only show provided columns (comma-separated)
-  --csv                   output is csv format [alias: --output=csv]
-  --filter=filter         filter property by partial string matching, ex: name=foo
-  --hidden                show hidden commands
-  --no-header             hide table header from output
-  --no-truncate           do not truncate output to fit screen
-  --output=csv|json|yaml  output in a more machine friendly format
-  --sort=sort             property to sort by (prepend '-' for descending)
+  -h, --help   show CLI help
+  -w, --watch  Runs the compiler in watch mode. Any changes will trigger a re-build.
+
+EXAMPLES
+  $ envuso build
+  $ envuso build --watch
 ```
 
-_See code: [@oclif/plugin-commands](https://github.com/oclif/plugin-commands/blob/v1.3.0/src/commands/commands.ts)_
+_See code: [lib/commands/build/index.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/build/index.js)_
+
+## `envuso db:seed`
+
+Run your database seeders
+
+```
+USAGE
+  $ envuso db:seed
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ envuso db:seed
+```
+
+_See code: [lib/commands/db/seed.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/db/seed.js)_
 
 ## `envuso generate-app-key`
 
@@ -116,7 +131,7 @@ EXAMPLE
   $ envuso generate-app-key
 ```
 
-_See code: [lib/commands/generate-app-key.js](https://github.com/envuso/cli/blob/v0.1.7/lib/commands/generate-app-key.js)_
+_See code: [lib/commands/generate-app-key.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/generate-app-key.js)_
 
 ## `envuso help [COMMAND]`
 
@@ -134,6 +149,20 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+
+## `envuso list`
+
+List all commands
+
+```
+USAGE
+  $ envuso list
+
+EXAMPLE
+  $ envuso list
+```
+
+_See code: [lib/commands/list.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/list.js)_
 
 ## `envuso make:controller NAME`
 
@@ -158,7 +187,7 @@ EXAMPLES
   $ envuso make:controller User --resource --model=User
 ```
 
-_See code: [lib/commands/make/controller.js](https://github.com/envuso/cli/blob/v0.1.7/lib/commands/make/controller.js)_
+_See code: [lib/commands/make/controller.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/make/controller.js)_
 
 ## `envuso make:middleware NAME`
 
@@ -179,7 +208,7 @@ EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/v0.1.7/lib/commands/make/middleware.js)_
+_See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/make/middleware.js)_
 
 ## `envuso make:model NAME`
 
@@ -200,7 +229,28 @@ EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.1.7/lib/commands/make/model.js)_
+_See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/make/model.js)_
+
+## `envuso make:socket-channel-listener NAME`
+
+Create a socket channel
+
+```
+USAGE
+  $ envuso make:socket-channel-listener NAME
+
+ARGUMENTS
+  NAME  Set a name for your socket channel
+
+OPTIONS
+  -f, --force  Force create, even if it exists.
+  -h, --help   show CLI help
+
+EXAMPLE
+  $ envuso make:socket-channel-listener UserSocketChannel
+```
+
+_See code: [lib/commands/make/socket-channel-listener.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/make/socket-channel-listener.js)_
 
 ## `envuso new`
 
@@ -217,5 +267,5 @@ EXAMPLE
   $ envuso new
 ```
 
-_See code: [lib/commands/new.js](https://github.com/envuso/cli/blob/v0.1.7/lib/commands/new.js)_
+_See code: [lib/commands/new.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/new.js)_
 <!-- commandsstop -->
