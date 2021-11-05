@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import {prompt} from "inquirer";
-import path from "path";
+import * as path from "path";
 import {TsCompiler} from "./TsCompiler";
 import chalk from "chalk";
 import {Log} from "./Utility/Log";
