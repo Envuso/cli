@@ -2,7 +2,7 @@ import {ConfigMetaGenerator, ControllerMetaGenerator, GenerateTypesFile, getProj
 import {SyntaxKind} from "@ts-morph/common";
 import chalk from "chalk";
 import {exec} from "child_process";
-import {ArrayLiteralExpression, IndentationText, Project, SourceFile} from "ts-morph";
+import {ArrayLiteralExpression, ClassDeclaration, IndentationText, Project, SourceFile} from "ts-morph";
 import {EnvusoProject} from "./EnvusoProject";
 import {StubFactory} from "./StubFactories/StubFactory";
 import {Log} from "./Utility/Log";
@@ -72,6 +72,23 @@ export class TsCompiler {
 		return this.classesLoaded.model
 			.filter(file => file.getClasses().length > 0)
 			.some(file => file.getClasses().some(c => c.getName() === name));
+	}
+
+	public static getModelClass(name: string): ClassDeclaration {
+		const file = this.classesLoaded.model
+			.filter(file => file.getClasses().length > 0)
+			.find(file => file.getClasses().some(c => c.getName() === name));
+
+		if (!file) {
+			throw new Error('Model file/class not found.');
+		}
+
+		const modelClass = file.getClasses().find(c => c.getName() === name);
+		if (!modelClass) {
+			throw new Error('Model class not found.');
+		}
+
+		return modelClass;
 	}
 
 	public static getApplicationServiceProviders(): string[] {

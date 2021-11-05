@@ -1,6 +1,7 @@
 import {Command, flags} from '@oclif/command';
 import chalk from "chalk";
-import {prompt} from "inquirer";
+import {cli} from "cli-ux";
+import inquirer, {prompt} from "inquirer";
 import {ApiResourceStubFactory} from "../../base/StubFactories/ApiResource/ApiResourceStubFactory";
 import {ModelPolicyStubFactory} from "../../base/StubFactories/Model/ModelPolicyStubFactory";
 import {ModelStubFactory} from "../../base/StubFactories/Model/ModelStubFactory";
@@ -34,7 +35,14 @@ export default class Resource extends Command {
 			name        : 'name',
 			type        : 'string',
 			required    : true,
-		}
+		},
+		//		{
+		//			description : 'Assign all properties from a model on the api resource',
+		//			char        : 'p',
+		//			name        : 'properties',
+		//			required    : false,
+		//			type        : 'boolean'
+		//		}
 	];
 
 	async run() {
@@ -45,9 +53,17 @@ export default class Resource extends Command {
 		await TsCompiler.setup();
 
 		if (!TsCompiler.hasModel(flags.model)) {
-			Log.errorBanner(`Cannot find a model by the name of "${flags.model}"`)
+			Log.errorBanner(`Cannot find a model by the name of "${flags.model}"`);
 			return;
 		}
+
+		const result: any = await prompt({
+			type    : 'confirm',
+			name    : 'withProperties',
+			message : 'Would you like to add all properties from your model on this resource?'
+		});
+
+		args.properties = result?.withProperties;
 
 		await TsCompiler.generateStub(stub, args.name, {...args, ...flags});
 	}
