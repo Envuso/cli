@@ -20,7 +20,7 @@ export default class Seed extends Command {
 	async run() {
 		const {args, flags} = this.parse(Seed);
 
-		await Build.run();
+		await TsCompiler.buildProject(false);
 
 		await TsCompiler.setup();
 

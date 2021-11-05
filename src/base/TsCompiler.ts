@@ -1,6 +1,8 @@
+import {ConfigMetaGenerator, ControllerMetaGenerator, GenerateTypesFile, ModuleMetaGenerator, Program} from "@envuso/compiler";
 import {SyntaxKind} from "@ts-morph/common";
 import chalk from "chalk";
 import {ArrayLiteralExpression, IndentationText, Project, SourceFile} from "ts-morph";
+import {EnvusoProject} from "./EnvusoProject";
 import {StubFactory} from "./StubFactories/StubFactory";
 import {Log} from "./Utility/Log";
 import {LogSymbols} from "./Utility/LogSymbols";
@@ -109,5 +111,23 @@ export class TsCompiler {
 
 
 		return file;
+	}
+
+	public static async buildProject(watch: boolean = false) {
+		await this.setup();
+
+		if (!EnvusoProject.isEnvusoDirectory()) {
+			console.log(`${LogSymbols.error} You must be in the root of your Envuso project to build.`);
+			return;
+		}
+
+		await Program.loadConfiguration();
+		await Program.setup([
+			GenerateTypesFile,
+			ConfigMetaGenerator,
+			ControllerMetaGenerator,
+			ModuleMetaGenerator,
+		]);
+		await Program.run(watch);
 	}
 }

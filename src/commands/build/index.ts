@@ -27,20 +27,6 @@ export default class Build extends Command {
 	async run() {
 		const {args, flags} = this.parse(Build);
 
-		await TsCompiler.setup();
-
-		if (!EnvusoProject.isEnvusoDirectory()) {
-			console.log(`${LogSymbols.error} You must be in the root of your Envuso project to build.`);
-			return;
-		}
-
-		await Program.loadConfiguration();
-		await Program.setup([
-			GenerateTypesFile,
-			ConfigMetaGenerator,
-			ControllerMetaGenerator,
-			ModuleMetaGenerator,
-		]);
-		await Program.run(flags.watch);
+		await TsCompiler.buildProject(flags.watch);
 	}
 }
