@@ -1,7 +1,10 @@
 import {Command, flags} from '@oclif/command';
 import chalk from "chalk";
+import {Decorator} from "ts-morph";
+import {ClassHelpers} from "../../base/ClassHelpers";
 import {ModelPolicyStubFactory} from "../../base/StubFactories/Model/ModelPolicyStubFactory";
 import {ModelStubFactory} from "../../base/StubFactories/Model/ModelStubFactory";
+import {StubFactory} from "../../base/StubFactories/StubFactory";
 import {TsCompiler} from "../../base/TsCompiler";
 import {Log} from "../../base/Utility/Log";
 import {LogSymbols} from "../../base/Utility/LogSymbols";
@@ -25,6 +28,12 @@ export default class Policy extends Command {
 			type        : 'boolean',
 			default     : false
 		}),
+		model : flags.string({
+			description : 'Define the model that this policy is for, the @policy decorator will be automatically added.',
+			char        : 'm',
+			name        : 'model',
+			default     : null
+		}),
 	};
 
 	static args = [
@@ -42,9 +51,33 @@ export default class Policy extends Command {
 		const stub = ModelPolicyStubFactory;
 
 		await TsCompiler.setup();
-		await TsCompiler.generateStub(stub, args.name, {...args, ...flags});
+		const sourceFile = await TsCompiler.generateStub(stub, args.name, {...args, ...flags});
 
-		Log.new(`Don't forget to add "@policy(${args.name})" to your Model.`);
+		if (flags.model) {
+			try {
+				const model = TsCompiler.getModelClass(flags.model);
 
+				const policyClass = sourceFile.getClasses()[0];
+
+				if (ClassHelpers.hasModelPolicyDecorator(policyClass.getName(), model)) {
+					Log.new('Skipping adding decorator to model. It looks like one is already defined.');
+					return;
+				}
+
+				model.addDecorator({
+					name      : "policy",
+					arguments : [policyClass.getName()],
+				});
+
+				const modelSource = model.getSourceFile();
+
+				modelSource.fixMissingImports(StubFactory.formatSettings(), StubFactory.formatPreferences());
+				await modelSource.save();
+				await modelSource.refreshFromFileSystem();
+			} catch (error) {
+				Log.errorBanner("Failed to add @policy decorator to model, reason:");
+				console.error(error);
+			}
+		}
 	}
 }

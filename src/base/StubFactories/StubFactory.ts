@@ -49,8 +49,8 @@ export abstract class StubFactory {
 			filePath, this.factory({...args, _fileName : fileName}), {overwrite : args.force, scriptKind : ScriptKind.TS}
 		);
 
-		sourceFile.formatText(this.formatSettings());
-		sourceFile.fixMissingImports(this.formatSettings(), this.formatPreferences());
+		sourceFile.formatText(StubFactory.formatSettings());
+		sourceFile.fixMissingImports(StubFactory.formatSettings(), StubFactory.formatPreferences());
 		await sourceFile.save();
 		await sourceFile.refreshFromFileSystem();
 
@@ -59,7 +59,7 @@ export abstract class StubFactory {
 		return sourceFile;
 	}
 
-	private formatSettings() {
+	public static formatSettings() {
 		return {
 			indentSize                                       : 4,
 			insertSpaceAfterCommaDelimiter                   : true,
@@ -75,7 +75,7 @@ export abstract class StubFactory {
 		await fs.ensureDir(info.dir);
 	}
 
-	private formatPreferences(): UserPreferences {
+	public static formatPreferences(): UserPreferences {
 		return {
 			importModuleSpecifierPreference     : "relative",
 			importModuleSpecifierEnding         : "minimal",

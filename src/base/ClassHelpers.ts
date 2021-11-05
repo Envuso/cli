@@ -1,4 +1,4 @@
-import {ClassDeclaration} from "ts-morph";
+import {ClassDeclaration, Decorator} from "ts-morph";
 
 export class ClassHelpers {
 
@@ -12,6 +12,17 @@ export class ClassHelpers {
 		return classDec.getProperties().map(p => {
 			return p.getName();
 		});
+	}
+
+	public static hasModelPolicyDecorator(policyClassName: string, model: ClassDeclaration) {
+		const dec = model.getDecorator((decorator: Decorator) => {
+			return decorator.getName() === 'policy' && decorator.getArguments().some(arg => {
+				console.log('Decorator arg: ', arg.getText());
+				return arg.getText() === policyClassName;
+			});
+		});
+
+		return !!dec;
 	}
 
 }
