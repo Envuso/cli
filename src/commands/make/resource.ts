@@ -42,14 +42,12 @@ export default class Resource extends Command {
 
 		const stub = ApiResourceStubFactory;
 
+		await TsCompiler.setup();
+
 		if (!TsCompiler.hasModel(flags.model)) {
 			Log.errorBanner(`Cannot find a model by the name of "${flags.model}"`)
 			return;
 		}
-
-		await TsCompiler.setup();
-
-
 
 		await TsCompiler.generateStub(stub, args.name, {...args, ...flags});
 	}
