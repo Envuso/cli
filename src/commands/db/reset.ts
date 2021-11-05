@@ -26,6 +26,10 @@ export default class Reset extends Command {
 	async run() {
 		const {args, flags} = this.parse(Reset);
 
-		await EnvusoProject.dropDatabase(true);
+		try {
+			await EnvusoProject.dropDatabase(true);
+		} catch (error) {
+			console.trace(error);
+		}
 	}
 }

@@ -33,6 +33,10 @@ export default class ResetCollection extends Command {
 	async run() {
 		const {args, flags} = this.parse(ResetCollection);
 
-		await EnvusoProject.dropCollection(true, args.name);
+		try {
+			await EnvusoProject.dropCollection(true, args.name);
+		} catch (error) {
+			console.trace(error);
+		}
 	}
 }
