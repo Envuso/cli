@@ -147,14 +147,19 @@ export class TsCompiler {
 			return;
 		}
 
-		await Program.loadConfiguration();
-		await Program.setup([]);
+		const {exec} = require("child_process");
 
-		const result = await Program.getProgram().emit({});
-
-		for (const diagnostic of result.getDiagnostics()) {
-			console.log(diagnostic.getMessageText());
-		}
+		exec("tsc", (error, stdout, stderr) => {
+			if (error) {
+				console.log(`error: ${error.message}`);
+				return;
+			}
+			if (stderr) {
+				console.log(`stderr: ${stderr}`);
+				return;
+			}
+			console.log('Tsc finished.');
+		});
 
 	}
 }
