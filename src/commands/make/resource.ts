@@ -36,13 +36,6 @@ export default class Resource extends Command {
 			type        : 'string',
 			required    : true,
 		},
-		//		{
-		//			description : 'Assign all properties from a model on the api resource',
-		//			char        : 'p',
-		//			name        : 'properties',
-		//			required    : false,
-		//			type        : 'boolean'
-		//		}
 	];
 
 	async run() {

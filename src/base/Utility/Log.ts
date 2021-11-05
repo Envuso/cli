@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import {Spinner} from "./LogSymbols";
+import {LogSymbols, Spinner} from "./LogSymbols";
 
 export class Log {
 
@@ -38,6 +38,18 @@ export class Log {
 	static stopSpinner() {
 		this.spinner.stop();
 		this.spinner.setText('');
+	}
+
+	static success(message: string) {
+		console.log(LogSymbols.success + ' ' + message);
+	}
+
+	static warning(message: string) {
+		console.log(LogSymbols.warning + ' ' + message);
+	}
+
+	static info(message: string) {
+		console.log(LogSymbols.rightArrow + ' ' + message);
 	}
 
 }
