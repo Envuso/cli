@@ -113,7 +113,7 @@ export class TsCompiler {
 		return file;
 	}
 
-	public static async buildProject(watch: boolean = false) {
+	public static async buildProject(watch: boolean = false, simpleBuild: boolean = false) {
 		await this.setup();
 
 		if (!EnvusoProject.isEnvusoDirectory()) {
@@ -122,12 +122,19 @@ export class TsCompiler {
 		}
 
 		await Program.loadConfiguration();
-		await Program.setup([
-			GenerateTypesFile,
-			ConfigMetaGenerator,
-			ControllerMetaGenerator,
-			ModuleMetaGenerator,
-		]);
-		await Program.run(watch);
+
+		if (!simpleBuild) {
+			await Program.setup([
+				GenerateTypesFile,
+				ConfigMetaGenerator,
+				ControllerMetaGenerator,
+				ModuleMetaGenerator,
+			]);
+			await Program.run(watch);
+
+			return;
+		}
+
+		await Program.build(watch);
 	}
 }

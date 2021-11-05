@@ -1,6 +1,10 @@
+import {Program} from "@envuso/compiler";
+import {SubscriberResultData} from "@envuso/compiler/Utility/CliOutput";
 import {Command, flags} from "@oclif/command";
 import * as path from "path";
+import {Observable} from "rxjs";
 import {TsCompiler} from "../../base/TsCompiler";
+import {Log} from "../../base/Utility/Log";
 import Build from "../build";
 
 export default class Seed extends Command {
@@ -20,7 +24,9 @@ export default class Seed extends Command {
 	async run() {
 		const {args, flags} = this.parse(Seed);
 
-		await TsCompiler.buildProject(false);
+		Log.new('Running typescript compiler first...');
+
+		await TsCompiler.buildProject(false, true);
 
 		await TsCompiler.setup();
 

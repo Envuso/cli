@@ -92,10 +92,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@envuso/compiler@^0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@envuso/compiler/-/compiler-0.0.19.tgz#a9b484cef606941f1b6169e52f4e65c067c4d0c4"
-  integrity sha512-p5Av/mIPadF9ws86h/2ajgaPplpC1Q0rIl2ve4fX3dS+7GwRkM6t3eCU5qhDnSeETspKdJa2LLoKl923WNQuxQ==
+"@envuso/compiler@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@envuso/compiler/-/compiler-0.0.20.tgz#8bbae579bd662ffdd7cf058978041acf33be5ca3"
+  integrity sha512-9JtHbi7weLVtMxoy+VKfI9c7JU5Gj+a+9epsopvBHnroqLC6esP+y8NNuFTf69rpR04IxqMNBmkpjPO102vrFA==
   dependencies:
     chokidar "^3.5.2"
     listr "^0.14.3"
