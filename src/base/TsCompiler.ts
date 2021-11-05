@@ -11,6 +11,7 @@ export type ClassesLoaded = {
 	socketChannelListener: SourceFile[];
 	middleware: SourceFile[];
 	config: SourceFile[];
+	policies: SourceFile[];
 }
 
 export class TsCompiler {
@@ -22,6 +23,7 @@ export class TsCompiler {
 		socketChannelListener : [],
 		middleware            : [],
 		config                : [],
+		policies              : [],
 	};
 
 	private static applicationServiceProviders: string[]                    = null;
@@ -45,6 +47,7 @@ export class TsCompiler {
 		this.classesLoaded.controller            = this.project.addSourceFilesAtPaths('src/App/Http/Controllers/**/*');
 		this.classesLoaded.socketChannelListener = this.project.addSourceFilesAtPaths('src/App/Http/Sockets/**/*');
 		this.classesLoaded.middleware            = this.project.addSourceFilesAtPaths('src/App/Http/Middleware/**/*');
+		this.classesLoaded.policies              = this.project.addSourceFilesAtPaths('src/Policies/**/*');
 		this.classesLoaded.config                = this.project.addSourceFilesAtPaths('src/Config/**/*');
 
 		return this;

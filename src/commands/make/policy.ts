@@ -1,15 +1,19 @@
 import {Command, flags} from '@oclif/command';
+import chalk from "chalk";
+import {ModelPolicyStubFactory} from "../../base/StubFactories/Model/ModelPolicyStubFactory";
 import {ModelStubFactory} from "../../base/StubFactories/Model/ModelStubFactory";
 import {TsCompiler} from "../../base/TsCompiler";
+import {Log} from "../../base/Utility/Log";
+import {LogSymbols} from "../../base/Utility/LogSymbols";
 
-export default class Model extends Command {
+export default class Policy extends Command {
 
-	static title = 'make:model';
+	static title = 'make:policy';
 
-	static description = 'Create a model';
+	static description = 'Create a model policy';
 
 	static examples = [
-		`$ envuso make:model User`,
+		`$ envuso make:policy User`,
 	];
 
 	static flags = {
@@ -25,7 +29,7 @@ export default class Model extends Command {
 
 	static args = [
 		{
-			description : 'Set a name for your model(Does not need to contain "Model" this will be automatically added.)',
+			description : 'Set a name for your model policy(Does not need to contain "Policy" this will be automatically added.)',
 			name        : 'name',
 			type        : 'string',
 			required    : true,
@@ -33,11 +37,14 @@ export default class Model extends Command {
 	];
 
 	async run() {
-		const {args, flags} = this.parse(Model);
+		const {args, flags} = this.parse(Policy);
 
-		const stub = ModelStubFactory;
+		const stub = ModelPolicyStubFactory;
 
 		await TsCompiler.setup();
 		await TsCompiler.generateStub(stub, args.name, {...args, ...flags});
+
+		Log.new(`Don't forget to add "@policy(${args.name})" to your Model.`);
+
 	}
 }
