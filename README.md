@@ -34,7 +34,7 @@ $ npm install -g @envuso/cli
 $ envuso COMMAND
 running command...
 $ envuso (-v|--version|version)
-@envuso/cli/0.1.22 darwin-arm64 node-v16.0.0
+@envuso/cli/0.1.23 darwin-arm64 node-v16.0.0
 $ envuso --help [COMMAND]
 USAGE
   $ envuso COMMAND
@@ -47,6 +47,8 @@ USAGE
 <!-- commands -->
 * [`envuso autocomplete [SHELL]`](#envuso-autocomplete-shell)
 * [`envuso build`](#envuso-build)
+* [`envuso db:reset`](#envuso-dbreset)
+* [`envuso db:reset-collection NAME`](#envuso-dbreset-collection-name)
 * [`envuso db:seed`](#envuso-dbseed)
 * [`envuso generate-app-key`](#envuso-generate-app-key)
 * [`envuso help [COMMAND]`](#envuso-help-command)
@@ -99,7 +101,44 @@ EXAMPLES
   $ envuso build --watch
 ```
 
-_See code: [lib/commands/build/index.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/build/index.js)_
+_See code: [lib/commands/build/index.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/build/index.js)_
+
+## `envuso db:reset`
+
+Reset your database
+
+```
+USAGE
+  $ envuso db:reset
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ envuso db:reset
+```
+
+_See code: [lib/commands/db/reset.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/db/reset.js)_
+
+## `envuso db:reset-collection NAME`
+
+Reset a collection in your database
+
+```
+USAGE
+  $ envuso db:reset-collection NAME
+
+ARGUMENTS
+  NAME  The name of the collection you want to reset
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ envuso db:reset-collection users
+```
+
+_See code: [lib/commands/db/reset-collection.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/db/reset-collection.js)_
 
 ## `envuso db:seed`
 
@@ -111,12 +150,14 @@ USAGE
 
 OPTIONS
   -h, --help  show CLI help
+  --fresh     If specified, this will drop your collection before running the seeder.
 
-EXAMPLE
+EXAMPLES
   $ envuso db:seed
+  $ envuso db:seed --fresh
 ```
 
-_See code: [lib/commands/db/seed.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/db/seed.js)_
+_See code: [lib/commands/db/seed.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/db/seed.js)_
 
 ## `envuso generate-app-key`
 
@@ -133,7 +174,7 @@ EXAMPLE
   $ envuso generate-app-key
 ```
 
-_See code: [lib/commands/generate-app-key.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/generate-app-key.js)_
+_See code: [lib/commands/generate-app-key.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/generate-app-key.js)_
 
 ## `envuso help [COMMAND]`
 
@@ -164,7 +205,7 @@ EXAMPLE
   $ envuso list
 ```
 
-_See code: [lib/commands/list.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/list.js)_
+_See code: [lib/commands/list.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/list.js)_
 
 ## `envuso make:controller NAME`
 
@@ -189,7 +230,7 @@ EXAMPLES
   $ envuso make:controller User --resource --model=User
 ```
 
-_See code: [lib/commands/make/controller.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/make/controller.js)_
+_See code: [lib/commands/make/controller.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/make/controller.js)_
 
 ## `envuso make:middleware NAME`
 
@@ -210,7 +251,7 @@ EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/make/middleware.js)_
+_See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/make/middleware.js)_
 
 ## `envuso make:model NAME`
 
@@ -231,7 +272,7 @@ EXAMPLE
   $ envuso make:model User
 ```
 
-_See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/make/model.js)_
+_See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/make/model.js)_
 
 ## `envuso make:policy NAME`
 
@@ -253,7 +294,7 @@ EXAMPLE
   $ envuso make:policy User
 ```
 
-_See code: [lib/commands/make/policy.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/make/policy.js)_
+_See code: [lib/commands/make/policy.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/make/policy.js)_
 
 ## `envuso make:resource NAME`
 
@@ -274,7 +315,7 @@ EXAMPLE
   $ envuso make:resource User --model=User
 ```
 
-_See code: [lib/commands/make/resource.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/make/resource.js)_
+_See code: [lib/commands/make/resource.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/make/resource.js)_
 
 ## `envuso make:socket-channel-listener NAME`
 
@@ -295,7 +336,7 @@ EXAMPLE
   $ envuso make:socket-channel-listener UserSocketChannel
 ```
 
-_See code: [lib/commands/make/socket-channel-listener.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/make/socket-channel-listener.js)_
+_See code: [lib/commands/make/socket-channel-listener.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/make/socket-channel-listener.js)_
 
 ## `envuso new`
 
@@ -312,5 +353,5 @@ EXAMPLE
   $ envuso new
 ```
 
-_See code: [lib/commands/new.js](https://github.com/envuso/cli/blob/v0.1.22/lib/commands/new.js)_
+_See code: [lib/commands/new.js](https://github.com/envuso/cli/blob/v0.1.23/lib/commands/new.js)_
 <!-- commandsstop -->
