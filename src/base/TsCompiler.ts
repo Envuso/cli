@@ -1,6 +1,7 @@
 import {ConfigMetaGenerator, ControllerMetaGenerator, GenerateTypesFile, getProject, ModuleMetaGenerator, Program} from "@envuso/compiler";
 import {SyntaxKind} from "@ts-morph/common";
 import chalk from "chalk";
+import {exec} from "child_process";
 import {ArrayLiteralExpression, IndentationText, Project, SourceFile} from "ts-morph";
 import {EnvusoProject} from "./EnvusoProject";
 import {StubFactory} from "./StubFactories/StubFactory";
@@ -139,24 +140,29 @@ export class TsCompiler {
 		await Program.build(watch);
 	}
 
-	public static async runTscCompiler() {
+	public static runTscCompiler() {
 		if (!EnvusoProject.isEnvusoDirectory()) {
 			console.log(`${LogSymbols.error} You must be in the root of your Envuso project to build.`);
 			return;
 		}
 
-		const {exec} = require("child_process");
+		return new Promise((resolve, reject) => {
+			const {exec} = require("child_process");
 
-		exec("tsc", (error, stdout, stderr) => {
-			if (error) {
-				console.log(`error: ${error.message}`);
-				return;
-			}
-			if (stderr) {
-				console.log(`stderr: ${stderr}`);
-				return;
-			}
-			console.log('Tsc finished.');
+			exec("tsc", (error, stdout, stderr) => {
+				if (error) {
+					console.log(`error: ${error.message}`);
+					reject(error);
+					return;
+				}
+				if (stderr) {
+					console.log(`stderr: ${stderr}`);
+					reject(stderr);
+					return;
+				}
+				console.log('Tsc finished.');
+				resolve(true);
+			});
 		});
 
 	}
