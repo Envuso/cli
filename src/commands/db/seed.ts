@@ -26,9 +26,8 @@ export default class Seed extends Command {
 
 		Log.new('Running typescript compiler first...');
 
-		await TsCompiler.buildProject(false, true);
-
 		await TsCompiler.setup();
+		await TsCompiler.runTscCompiler();
 
 		const {seedDatabase} = await import(path.join(process.cwd(), 'node_modules', '@envuso', 'core', 'Cli', 'CliHandler'));
 
