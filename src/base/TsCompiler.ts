@@ -135,6 +135,7 @@ export class TsCompiler {
 			return;
 		}
 
+		await Program.setup([]);
 		await Program.build(watch);
 	}
 }
