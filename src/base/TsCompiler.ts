@@ -159,7 +159,7 @@ export class TsCompiler {
 
 	public static runTscCompiler() {
 		if (!EnvusoProject.isEnvusoDirectory()) {
-			console.log(`${LogSymbols.error} You must be in the root of your Envuso project to build.`);
+			Log.warning(`You must be in the root of your Envuso project to build.`);
 			return;
 		}
 
@@ -177,7 +177,7 @@ export class TsCompiler {
 					reject(stderr);
 					return;
 				}
-				console.log('Tsc finished.');
+				Log.success('Typescript compilation finished.');
 				resolve(true);
 			});
 		});
