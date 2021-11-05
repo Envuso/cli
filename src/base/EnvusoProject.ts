@@ -42,7 +42,7 @@ export class EnvusoProject {
 			const result = await prompt({
 				type    : 'confirm',
 				name    : 'reset',
-				message : chalk.yellow(`Are you sure you want to do this? This will ${chalk.bold('drop')} your mongodb database ${chalk.bold(`"${name}"`)}.`)
+				message : chalk.yellow(`Are you sure you want to do this? This will ${chalk.bold('drop')} your mongodb database.`)
 			});
 
 			if (!result.reset) {
