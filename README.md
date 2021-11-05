@@ -34,7 +34,7 @@ $ npm install -g @envuso/cli
 $ envuso COMMAND
 running command...
 $ envuso (-v|--version|version)
-@envuso/cli/0.1.20 darwin-arm64 node-v16.0.0
+@envuso/cli/0.1.21 darwin-arm64 node-v16.0.0
 $ envuso --help [COMMAND]
 USAGE
   $ envuso COMMAND
@@ -99,7 +99,7 @@ EXAMPLES
   $ envuso build --watch
 ```
 
-_See code: [lib/commands/build/index.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/build/index.js)_
+_See code: [lib/commands/build/index.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/build/index.js)_
 
 ## `envuso db:seed`
 
@@ -116,7 +116,7 @@ EXAMPLE
   $ envuso db:seed
 ```
 
-_See code: [lib/commands/db/seed.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/db/seed.js)_
+_See code: [lib/commands/db/seed.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/db/seed.js)_
 
 ## `envuso generate-app-key`
 
@@ -133,7 +133,7 @@ EXAMPLE
   $ envuso generate-app-key
 ```
 
-_See code: [lib/commands/generate-app-key.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/generate-app-key.js)_
+_See code: [lib/commands/generate-app-key.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/generate-app-key.js)_
 
 ## `envuso help [COMMAND]`
 
@@ -164,7 +164,7 @@ EXAMPLE
   $ envuso list
 ```
 
-_See code: [lib/commands/list.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/list.js)_
+_See code: [lib/commands/list.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/list.js)_
 
 ## `envuso make:controller NAME`
 
@@ -189,7 +189,7 @@ EXAMPLES
   $ envuso make:controller User --resource --model=User
 ```
 
-_See code: [lib/commands/make/controller.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/make/controller.js)_
+_See code: [lib/commands/make/controller.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/make/controller.js)_
 
 ## `envuso make:middleware NAME`
 
@@ -210,7 +210,7 @@ EXAMPLE
   $ envuso make:middleware User
 ```
 
-_See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/make/middleware.js)_
+_See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/make/middleware.js)_
 
 ## `envuso make:model NAME`
 
@@ -231,7 +231,7 @@ EXAMPLE
   $ envuso make:model User
 ```
 
-_See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/make/model.js)_
+_See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/make/model.js)_
 
 ## `envuso make:policy NAME`
 
@@ -245,14 +245,15 @@ ARGUMENTS
   NAME  Set a name for your model policy(Does not need to contain "Policy" this will be automatically added.)
 
 OPTIONS
-  -f, --force  Force create the model, even if it exists.
-  -h, --help   show CLI help
+  -f, --force        Force create the model, even if it exists.
+  -h, --help         show CLI help
+  -m, --model=model  Define the model that this policy is for, the @policy decorator will be automatically added.
 
 EXAMPLE
   $ envuso make:policy User
 ```
 
-_See code: [lib/commands/make/policy.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/make/policy.js)_
+_See code: [lib/commands/make/policy.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/make/policy.js)_
 
 ## `envuso make:resource NAME`
 
@@ -273,7 +274,7 @@ EXAMPLE
   $ envuso make:resource User --model=User
 ```
 
-_See code: [lib/commands/make/resource.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/make/resource.js)_
+_See code: [lib/commands/make/resource.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/make/resource.js)_
 
 ## `envuso make:socket-channel-listener NAME`
 
@@ -294,7 +295,7 @@ EXAMPLE
   $ envuso make:socket-channel-listener UserSocketChannel
 ```
 
-_See code: [lib/commands/make/socket-channel-listener.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/make/socket-channel-listener.js)_
+_See code: [lib/commands/make/socket-channel-listener.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/make/socket-channel-listener.js)_
 
 ## `envuso new`
 
@@ -311,5 +312,5 @@ EXAMPLE
   $ envuso new
 ```
 
-_See code: [lib/commands/new.js](https://github.com/envuso/cli/blob/v0.1.20/lib/commands/new.js)_
+_See code: [lib/commands/new.js](https://github.com/envuso/cli/blob/v0.1.21/lib/commands/new.js)_
 <!-- commandsstop -->
