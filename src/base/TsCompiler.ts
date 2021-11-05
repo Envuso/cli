@@ -140,8 +140,6 @@ export class TsCompiler {
 	}
 
 	public static async runTscCompiler() {
-		await this.setup();
-
 		if (!EnvusoProject.isEnvusoDirectory()) {
 			console.log(`${LogSymbols.error} You must be in the root of your Envuso project to build.`);
 			return;
