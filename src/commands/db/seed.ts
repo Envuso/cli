@@ -1,6 +1,7 @@
 import {Command, flags} from "@oclif/command";
 import * as path from "path";
 import {TsCompiler} from "../../base/TsCompiler";
+import Build from "../build";
 
 export default class Seed extends Command {
 
@@ -18,6 +19,8 @@ export default class Seed extends Command {
 
 	async run() {
 		const {args, flags} = this.parse(Seed);
+
+		await Build.run();
 
 		await TsCompiler.setup();
 

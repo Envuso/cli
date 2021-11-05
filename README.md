@@ -34,7 +34,7 @@ $ npm install -g @envuso/cli
 $ envuso COMMAND
 running command...
 $ envuso (-v|--version|version)
-@envuso/cli/0.1.8 darwin-arm64 node-v17.0.1
+@envuso/cli/0.1.8 darwin-arm64 node-v16.0.0
 $ envuso --help [COMMAND]
 USAGE
   $ envuso COMMAND
@@ -54,6 +54,8 @@ USAGE
 * [`envuso make:controller NAME`](#envuso-makecontroller-name)
 * [`envuso make:middleware NAME`](#envuso-makemiddleware-name)
 * [`envuso make:model NAME`](#envuso-makemodel-name)
+* [`envuso make:policy NAME`](#envuso-makepolicy-name)
+* [`envuso make:resource NAME`](#envuso-makeresource-name)
 * [`envuso make:socket-channel-listener NAME`](#envuso-makesocket-channel-listener-name)
 * [`envuso new`](#envuso-new)
 
@@ -212,24 +214,66 @@ _See code: [lib/commands/make/middleware.js](https://github.com/envuso/cli/blob/
 
 ## `envuso make:model NAME`
 
-Create a middleware
+Create a model
 
 ```
 USAGE
   $ envuso make:model NAME
 
 ARGUMENTS
-  NAME  Set a name for your middleware(Does not need to contain "Model" this will be automatically added.)
+  NAME  Set a name for your model(Does not need to contain "Model" this will be automatically added.)
 
 OPTIONS
-  -f, --force  Force create the controller, even if it exists.
+  -f, --force  Force create the model, even if it exists.
   -h, --help   show CLI help
 
 EXAMPLE
-  $ envuso make:middleware User
+  $ envuso make:model User
 ```
 
 _See code: [lib/commands/make/model.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/make/model.js)_
+
+## `envuso make:policy NAME`
+
+Create a model policy
+
+```
+USAGE
+  $ envuso make:policy NAME
+
+ARGUMENTS
+  NAME  Set a name for your model policy(Does not need to contain "Policy" this will be automatically added.)
+
+OPTIONS
+  -f, --force  Force create the model, even if it exists.
+  -h, --help   show CLI help
+
+EXAMPLE
+  $ envuso make:policy User
+```
+
+_See code: [lib/commands/make/policy.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/make/policy.js)_
+
+## `envuso make:resource NAME`
+
+Create an api resource
+
+```
+USAGE
+  $ envuso make:resource NAME
+
+ARGUMENTS
+  NAME  Set a name for your api resource(Does not need to contain "Resource" this will be automatically added.)
+
+OPTIONS
+  -h, --help         show CLI help
+  -m, --model=model  (required) Create an api resource using your model
+
+EXAMPLE
+  $ envuso make:resource User --model=User
+```
+
+_See code: [lib/commands/make/resource.js](https://github.com/envuso/cli/blob/v0.1.8/lib/commands/make/resource.js)_
 
 ## `envuso make:socket-channel-listener NAME`
 
