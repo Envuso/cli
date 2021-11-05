@@ -147,7 +147,10 @@ export class TsCompiler {
 			return;
 		}
 
-		const result = await getProject().emit({})
+		await Program.loadConfiguration();
+		await Program.setup([]);
+
+		const result = await Program.getProgram().emit({});
 
 		for (const diagnostic of result.getDiagnostics()) {
 			console.log(diagnostic.getMessageText());
