@@ -171,7 +171,7 @@ export default class New extends Command {
 	}
 
 	completionText(packageManager: string, projectName: string) {
-		const link = terminalLink('', 'https://envuso.com/docs');
+		const link = terminalLink('', 'https://envuso.com/');
 
 
 		const envusoText = boxen(chalk.bold.bgBlue.whiteBright(' ENVUSO '),
