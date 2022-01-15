@@ -164,7 +164,7 @@ export default class New extends Command {
 			case 'yarn':
 				return `yarn --cwd ${projectDirectory}`;
 			case 'npm':
-				return `npm --prefix ${projectDirectory} install`;
+				return `npm install ${projectDirectory}`;
 		}
 
 		return '';
