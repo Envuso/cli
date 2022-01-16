@@ -16,7 +16,7 @@ export default class Middleware extends Command {
 	static flags = {
 		help  : flags.help({char : 'h'}),
 		force : flags.boolean({
-			description : 'Force create the controller, even if it exists.',
+			description : 'Force create the middleware, even if it exists.',
 			char        : 'f',
 			name        : 'force',
 			type        : 'boolean',
