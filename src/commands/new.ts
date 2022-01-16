@@ -3,6 +3,7 @@ import * as boxen from "boxen";
 import chalk from "chalk";
 import * as fs from "fs";
 import * as Listr from "listr";
+import * as os from "os";
 import * as path from "path";
 //@ts-ignore
 import * as clone from 'git-clone';
@@ -77,6 +78,12 @@ export default class New extends Command {
 						observer.next('Cloning Repository...');
 
 						clone('https://github.com/Envuso/framework', projectDir, async () => {
+							observer.next('Removing .git directory');
+
+							if (fs.existsSync(path.join(projectDir, '.git'))) {
+								fs.rmdirSync(path.join(projectDir, '.git'), {recursive : true});
+							}
+
 							observer.complete();
 						});
 					});
@@ -90,32 +97,6 @@ export default class New extends Command {
 							throw new Error('Project directory doesnt exist for some reason...');
 						}
 						observer.complete();
-					});
-				}
-			},
-			{
-				title : 'Installing dependencies',
-				task  : (ctx, task) => {
-					return new Observable((observable) => {
-						const cmd = this.getPackageManagerArgs(projectDir, packageManagerResponse.manager);
-						if (!cmd) {
-							throw new Error('Hmmm... something went wrong');
-						}
-
-						exec(String(`${cmd}`), (error: ExecException | null, stdout: string, stderr: string) => {
-							if (error === null) {
-								observable.complete();
-								return;
-							}
-							if (error) {
-								throw error;
-							}
-							if (stderr) {
-								throw new Error(stderr);
-							}
-
-							observable.next(stdout);
-						});
 					});
 				}
 			},
@@ -150,6 +131,38 @@ export default class New extends Command {
 			},
 		]);
 
+		/**
+		 * Windows cannot use the npm --prefix command, we need to ask user to npm/yarn install manually.
+		 */
+		if (os.platform() !== 'win32') {
+			tasks.add({
+				title : 'Installing dependencies',
+				task  : (ctx, task) => {
+					return new Observable((observable) => {
+						const cmd = this.getPackageManagerArgs(projectDir, packageManagerResponse.manager);
+						if (!cmd) {
+							throw new Error('Hmmm... something went wrong');
+						}
+
+						exec(String(`${cmd}`), (error: ExecException | null, stdout: string, stderr: string) => {
+							if (error === null) {
+								observable.complete();
+								return;
+							}
+							if (error) {
+								throw error;
+							}
+							if (stderr) {
+								throw new Error(stderr);
+							}
+
+							observable.next(stdout);
+						});
+					});
+				}
+			});
+		}
+
 		try {
 			await tasks.run();
 
@@ -173,7 +186,6 @@ export default class New extends Command {
 	completionText(packageManager: string, projectName: string) {
 		const link = terminalLink('', 'https://envuso.com/');
 
-
 		const envusoText = boxen(chalk.bold.bgBlue.whiteBright(' ENVUSO '),
 			{
 				backgroundColor : "blue",
@@ -183,13 +195,17 @@ export default class New extends Command {
 				align           : "center",
 			});
 
+		const cdDirStepText = os.platform() === 'win32'
+			? `cd ${projectName} && ${packageManager} install`
+			: `cd ${projectName}`;
+
 		return boxen(
 			envusoText +
 			'\n' +
 			'\n' +
 			'Next Steps:' +
 			'\n' +
-			chalk.bold('cd ' + projectName) +
+			chalk.bold(cdDirStepText) +
 			'\n' +
 			chalk.bold('Check package.json scripts to compile & run :)') +
 			'\n' +
